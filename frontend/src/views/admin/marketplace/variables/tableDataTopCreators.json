@@ -32,12 +32,18 @@
     "rating": 30
   },
   {
-    "name": ["@simmmple.web", "https://i.ibb.co/7p0d1Cd/Frame-24.png"],
+    "name": [
+      "@simmmple.web",
+      "https://i.ibb.co/7p0d1Cd/Frame-24.png"
+    ],
     "artworks": "3871",
     "rating": 30
   },
   {
-    "name": ["@horizon.ui", "https://i.ibb.co/NSJYQYD/Horizon-UI-Avatar.png"],
+    "name": [
+      "@Ilearnova.ui",
+      "https://i.ibb.co/NSJYQYD/Ilearnova-UI-Avatar.png"
+    ],
     "artworks": "3152",
     "rating": 30
   },
