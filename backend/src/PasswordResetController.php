@@ -23,11 +23,7 @@ class PasswordResetController {
         $stmt = $this->pdo->prepare("INSERT INTO password_resets (user_id, reset_token, expires_at) VALUES (?, ?, ?)");
         $stmt->execute([$user['id'], $token, $expiresAt]);
 
-        // Send the email with the link
-        // For simplicity, we'll just pretend
-        // In a real scenario, use PHPMailer and set MAILER configs
-        // $resetLink = "http://localhost:3000/reset-password?token=$token";
-        // sendMail($email, "Password Reset", "Click here to reset: $resetLink");
+       
 
         json_response(['message' => 'If that email exists, a reset link has been sent.']);
     }
