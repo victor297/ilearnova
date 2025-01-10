@@ -1,78 +1,91 @@
 <?php
+namespace App\Controller;
+
+use PDO;
+
+require_once __DIR__ . '/../src/helpers.php';
+require_once __DIR__ . '/../config/db.php';
+
+
 class AuthController {
-    private $pdo;
-    public function __construct($pdo) {
-        $this->pdo = $pdo;
+    
+        private $pdo;
+    
+        public function __construct(PDO $pdo)
+        {
+            $this->pdo = $pdo;
+        }
+    
+        public function login($requestData)
+        {
+            $email = $requestData['email'];
+            $password = $requestData['password'];
+    
+            $stmt = $this->pdo->prepare("SELECT * FROM users WHERE email = :email");
+            $stmt->bindParam(':email', $email);
+            $stmt->execute();
+    
+            $user = $stmt->fetch();
+            if (!$user) {
+                http_response_code(401);
+                echo json_encode(['error' => 'Invalid email or password']);
+                exit;
+            }
+    
+            if (!password_verify($password, $user['password'])) {
+                http_response_code(401);
+                echo json_encode(['error' => 'Invalid email or password']);
+                exit;
+            }
+    
+            $token = bin2hex(random_bytes(32));
+            $stmt = $this->pdo->prepare("UPDATE users SET token = :token WHERE id = :id");
+            $stmt->bindParam(':token', $token);
+            $stmt->bindParam(':id', $user['id']);
+            $stmt->execute();
+    
+            echo json_encode(['token' => $token]);
+        }
+    
+        public function register($requestData)
+        {
+            $name = $requestData['name'];
+            $email = $requestData['email'];
+            $password = $requestData['password'];
+
+$hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+        $stmt = $this->pdo->prepare("INSERT INTO users (name, email, password) VALUES (:name, :email, :password)");
+        $stmt->bindParam(':name', $name);
+        $stmt->bindParam(':email', $email);
+        $stmt->bindParam(':password', $hashedPassword);
+        $stmt->execute();
+
+        echo json_encode(['message' => 'User created successfully']);
+        json_response(['message' => 'User created successful!
+        User retrieved successfully!'], 200);
+        echo json_response(['message'=> 'User created successful!']);
+        echo "AuthController loaded successfully!";
+        exit(0);
+
     }
 
-    public function signup($data) {
-        $firstName = trim($data['first_name'] ?? '');
-        $lastName = trim($data['last_name'] ?? '');
-        $phone = trim($data['phone'] ?? '');
-        $role = trim($data['role'] ?? 'user');
-        $email = trim($data['email'] ?? '');
-        $password = $data['password'] ?? '';
+    public function logout($requestData)
+    {
+        $token = $requestData['token'];
 
-        if (!$firstName || !$lastName || !$email || !$password) {
-            json_response(['error' => 'Missing required fields'], 400);
-        }
+        $stmt = $this->pdo->prepare("UPDATE users SET token = NULL WHERE token = :token");
+        $stmt->bindParam(':token', $token);
+        $stmt->execute();
 
-        
-        $stmt = $this->pdo->prepare("SELECT id FROM users WHERE email = ?");
-        $stmt->execute([$email]);
-        if ($stmt->rowCount() > 0) {
-            json_response(['error' => 'Email already in use.'], 400);
-        }
-
-        $passwordHash = password_hash($password, PASSWORD_BCRYPT);
-        $stmt = $this->pdo->prepare(
-            "INSERT INTO users (first_name, last_name, phone, role, email, password_hash)
-             VALUES (?, ?, ?, ?, ?, ?)"
-        );
-        $stmt->execute([$firstName, $lastName, $phone, $role, $email, $passwordHash]);
-
-        $userId = $this->pdo->lastInsertId();
-
-        start_session_if_not_started();
-        $_SESSION['user_id'] = $userId;
-
-        json_response(['message' => 'Signup successful!', 'user_id' => $userId]);
-    }
-
-    public function login($data) {
-        $email = trim($data['email'] ?? '');
-        $password = $data['password'] ?? '';
-
-        $stmt = $this->pdo->prepare("SELECT id, password_hash FROM users WHERE email = ?");
-        $stmt->execute([$email]);
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if (!$user || !password_verify($password, $user['password_hash'])) {
-            json_response(['error' => 'Invalid credentials.'], 401);
-        }
-
-        start_session_if_not_started();
-        $_SESSION['user_id'] = $user['id'];
-
-        json_response(['message' => 'Login successful', 'user_id' => $user['id']]);
-    }
-
-    public function logout() {
-        start_session_if_not_started();
-        session_destroy();
-        json_response(['message' => 'Logged out successfully']);
-    }
-
-    public function me() {
-        start_session_if_not_started();
-        if (!isset($_SESSION['user_id'])) {
-            json_response(['error' => 'Not authenticated'], 401);
-        }
-
-        $stmt = $this->pdo->prepare("SELECT id, first_name, last_name, email, role FROM users WHERE id = ?");
-        $stmt->execute([$_SESSION['user_id']]);
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        json_response(['user' => $user]);
+        echo json_encode(['message' => 'Logged out successfully']);
     }
 }
+json_response(['message' => 'User created successful!
+User retrieved successfully!'], 200);
+echo json_response(['message'=> 'User created successful!']);
+echo "AuthController loaded successfully!";
+exit(0);
+
+
+    

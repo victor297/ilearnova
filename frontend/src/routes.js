@@ -17,9 +17,20 @@ import {
   MdBarChart,
   MdPerson,
   MdLock,
+  MdPayment,
 } from "react-icons/md";
 import SignUp from "views/auth/SignUp";
 import ForgotPassword from "views/auth/ForgotPassword";
+ import PaymentPage from "views/admin/payment/page/PaymentPage";
+// import PaymentDetailPage from "views/admin/payment/page/PaymentDetailPage";
+ import DynamicTimetable from "views/admin/Grades/DynamicTimetable";
+ import PerformanceInsights from "views/admin/Dashboard/PerformanceInsights";
+// import DashboardOverview from "views/admin/Overview/DashboardOverview";
+ import MyCourses from "views/admin/MyCourses/MyCourses";
+// import PaymentMethod from "views/admin/Payments/PaymentMethod";
+ import AttendanceTable from "views/admin/Attendance/AttendanceTable";
+ import AttendanceSummary from "views/admin/Attendance/page/AttendanceSummary";
+ //import  CoursePage  from "views/admin/Courses/CoursePage";
 
 const routes = [
   {
@@ -29,6 +40,36 @@ const routes = [
     icon: <MdHome className="h-6 w-6" />,
     component: <MainDashboard />,
   },
+   {
+     name: "Dashboard",
+     layout: "/admin",
+     path: "Dashboard",
+     icon: <MdHome className="h-6 w-6" />,
+     component: <PerformanceInsights />,
+   },
+   {
+     name: "MyCourses",
+     layout: "/admin",
+     path: "MyCourses",
+     icon: <MdHome className="h-6 w-6" />,
+     component: <MyCourses />,
+   },
+  // {
+    // name: "Courses",
+     //layout: "/admin",
+     //path: "Courses",
+     //icon: <MdHome className="h-6 w-6" />,
+     //component: <CoursePage />,
+   //},
+
+  // {
+  //   name: "Overview",
+  //   layout: "/admin",
+  //   path: "Overview",
+  //   icon: <MdHome className="h-6 w-6" />,
+  //   component: <DashboardOverview />,
+  // },
+
   {
     name: "NFT Marketplace",
     layout: "/admin",
@@ -65,6 +106,53 @@ const routes = [
     icon: <MdLock className="h-6 w-6" />,
     component: <SignUp />,
   },
+
+   {
+     name: "payment",
+     layout: "/admin",
+     path: "payment",
+     icon: <MdPayment className="h-6 w-6" />,
+     component: <PaymentPage />,
+   },
+   {
+     name: "Grades",
+     layout: "/admin",
+     path: "Grades",
+     icon: <MdPayment className="h-6 w-6" />,
+     component: <DynamicTimetable />,
+  },
+  // {
+  //   name: "payment",
+  //   layout: "/admin",
+  //   path: "payment-detail /:id",
+  //   icon: <MdLock className="h-6 w-6" />,
+  //   component: <PaymentDetailPage />,
+  // },
+
+  // {
+  //   name: "payment",
+  //   layout: "/admin",
+  //   path: "payment-method",
+  //   icon: <MdLock className="h-6 w-6" />,
+  //   component: <PaymentMethod />,
+  // },
+
+   {
+     name: "Attendance",
+     layout: "/admin",
+     path: "Attendance",
+     icon: <MdLock className="h-6 w-6" />,
+     component: <AttendanceTable />,
+   },
+
+   {
+     name: "Attendance",
+     layout: "/admin",
+     path: "Attendance",
+     icon: <MdLock className="h-6 w-6" />,
+     component: <AttendanceSummary />,
+   },
+
   {
     name: "Forgot",
     layout: "/auth",

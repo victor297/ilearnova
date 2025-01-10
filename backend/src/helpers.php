@@ -1,4 +1,6 @@
 <?php
+
+
 function json_response($data, $code = 200) {
     http_response_code($code);
     header('Content-Type: application/json');
